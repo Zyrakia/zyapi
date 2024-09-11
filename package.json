@@ -1,0 +1,33 @@
+{
+	"name": "zyapi",
+	"version": "1.0.0",
+	"description": "API for zyrakia.dev and related projects.",
+	"private": true,
+	"license": "MIT",
+	"repository": "https://github.com/zyrakia/zyapi",
+	"author": {
+		"name": "Zyrakia",
+		"email": "mail@zyrakia.dev",
+		"url": "https://zyrakia.dev"
+	},
+	"main": "./src/index.ts",
+	"type": "module",
+	"scripts": {
+		"start": "bun .",
+		"dev": "bun --watch .",
+		"studio": "drizzle-kit studio"
+	},
+	"dependencies": {
+		"drizzle-orm": "^0.33.0",
+		"drizzle-zod": "^0.5.1",
+		"express": "^4.20.0",
+		"express-file-routing": "^3.0.3",
+		"http-status-codes": "^2.3.0",
+		"postgres": "^3.4.4"
+	},
+	"devDependencies": {
+		"@types/express": "^4.17.21",
+		"bun": "^1.1.27",
+		"drizzle-kit": "^0.24.2"
+	}
+}

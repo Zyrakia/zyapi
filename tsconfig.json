@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "lib": [
+            "es2023"
+        ],
+        "module": "nodenext",
+        "target": "es2022",
+        "types": [
+            "node"
+        ],
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "moduleResolution": "node16",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "experimentalDecorators": true,
+        "noEmit": true,
+        "allowImportingTsExtensions": true,
+        "paths": {
+            "@/*": [
+                "./src/*"
+            ],
+        }
+    }
+}
