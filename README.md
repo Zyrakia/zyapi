@@ -6,26 +6,26 @@ This API provides basic information about me, my projects, skills and technologi
 
 All responses are in JSON format, and standardized to the following formats:
 
-**Success response**:
+**Success response format**:
 
-```json
+```ts
 {
-    "statusCode": number;
-    "statusMessage": string;
-    "success": true;
-    "message": string | undefined;
-    "value": unknown | undefined;
+	statusCode: number;
+	statusMessage: string;
+	success: true;
+	message: string | undefined;
+	value: unknown | undefined;
 }
 ```
 
-**Error response**:
+**Error response format**:
 
-```json
+```ts
 {
-    "statusCode": number;
-    "statusMessage": string;
-    "success": false;
-    "error": string;
+	statusCode: number;
+	statusMessage: string;
+	success: false | undefined;
+	error: string | undefined;
 }
 ```
 
