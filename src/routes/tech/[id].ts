@@ -12,5 +12,6 @@ export const get: Handler = async (req, res) => {
 		? await TechnologiesController.getTechnologyWithProjects(id)
 		: await TechnologiesController.getTechnology(id);
 
+	if (!technology) return Resolve(res).notFound('The specified technology does not exist.');
 	Resolve(res).okWith(technology);
 };

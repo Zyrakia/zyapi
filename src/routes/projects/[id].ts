@@ -12,5 +12,6 @@ export const get: Handler = async (req, res) => {
 		? await ProjectsController.getProjectWithTechnologies(id)
 		: await ProjectsController.getProject(id);
 
+	if (!project) return Resolve(res).notFound('The specified project does not exist.');
 	Resolve(res).okWith(project);
 };
