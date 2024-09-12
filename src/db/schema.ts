@@ -24,7 +24,6 @@ export const TechTable = pgTable('technology', {
 export const InsertTechSchema = createInsertSchema(TechTable).omit({ id: true });
 
 export const TechUsageTable = pgTable('technology_usage', {
-	id: smallserial('id').primaryKey(),
 	project_id: smallserial('project_id').references(() => ProjectTable.id),
 	technology_id: smallserial('technology_id').references(() => TechTable.id),
 });

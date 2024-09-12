@@ -1,6 +1,7 @@
 import { db } from '@/db/index.ts';
 import { ProjectTable } from '@/db/schema.ts';
 import { eq } from 'drizzle-orm';
+import { TechnologiesController } from './technologies.controller.ts';
 
 /**
  * Responsible for handling all the CRUD operations for the projects table.
@@ -25,5 +26,14 @@ export namespace ProjectsController {
 		return project[0];
 	}
 
-	export async function findProjectByName(name: string) {}
+	/**
+	 * Returns a project with it's technologies, if the project exists.
+	 */
+	export async function getProjectWithTechnologies(id: number) {
+		const project = await ProjectsController.getProject(id);
+		if (!project) return;
+
+		const technologies = await TechnologiesController.getProjectTechnologies(id);
+		return { ...project, technologies };
+	}
 }
