@@ -1,5 +1,5 @@
 import { db } from '@/db/index.ts';
-import { ProjectTable } from '@/db/schema.ts';
+import { ProjectTable, TechUsageTable } from '@/db/schema.ts';
 import { eq } from 'drizzle-orm';
 import { TechnologiesController } from './technologies.controller.ts';
 
@@ -33,7 +33,28 @@ export namespace ProjectsController {
 		const project = await ProjectsController.getProject(id);
 		if (!project) return;
 
-		const technologies = await TechnologiesController.getProjectTechnologies(id);
+		const technologies = await TechnologiesController.getTechnologiesUsedByProject(id);
 		return { ...project, technologies };
+	}
+
+	/**
+	 * Returns all the projects that use a specific technology.
+	 *
+	 * @param technologyId the ID of the technology to get the projects from
+	 * @returns the projects that use the specified technology
+	 */
+	export async function getProjectsUsingTechnology(technologyId: number) {
+		return await db
+			.select({
+				id: ProjectTable.id,
+				name: ProjectTable.name,
+				description: ProjectTable.description,
+				url: ProjectTable.url,
+				start_date: ProjectTable.start_date,
+				end_date: ProjectTable.end_date,
+			})
+			.from(TechUsageTable)
+			.innerJoin(ProjectTable, eq(ProjectTable.id, TechUsageTable.project_id))
+			.where(eq(TechUsageTable.technology_id, technologyId));
 	}
 }
