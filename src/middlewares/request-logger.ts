@@ -6,8 +6,8 @@ import pc from 'picocolors';
  * debugging and inspection.
  */
 export const requestLogger = morgan((tokens, req, res) => {
-	const responseCode = parseInt(tokens.status(req, res) || '');
-	const responseTime = parseInt(tokens['response-time'](req, res) || '');
+	const responseCode = res.statusCode;
+	const responseTime = parseInt(tokens['total-time'](req, res) || '');
 	return `${pc.blue(tokens.method(req, res))} ${pc.bold('@')} ${pc.blue(tokens.url(req, res))} ${pc.bold(
 		'|>',
 	)} ${
