@@ -31,7 +31,29 @@ All responses are in JSON format, and standardized to the following formats:
 
 ## Endpoints
 
-The following list of endpoints may not be 100% accurate, but is updated regularly.
+The following list of endpoints may not be 100% accurate, depending on if I have forgotten to update the documentation or not.
 
--   `GET /` - returns general information about me.
--   `GET /projects` - returns a list of my favorite projects or projects that I am currently working on or have recently worked on.
+<details>
+ <summary><code>GET</code> <code><b>/</b></code> <code>(gets general information about me)</code></summary>
+
+##### Response Value
+
+```ts
+{
+	name: string;
+	alias: string;
+	avatar_url: string;
+	bio: string;
+	age: number;
+	location: string;
+	contact: {
+		email: string;
+		website: string;
+		github: string;
+		linkedin: string;
+		twitter: string;
+	}
+}
+```
+
+</details>
