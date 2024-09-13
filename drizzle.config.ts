@@ -1,3 +1,4 @@
+import { env } from '@/env.ts';
 import { defineConfig } from 'drizzle-kit';
 
 export default defineConfig({
@@ -5,11 +6,11 @@ export default defineConfig({
 	schema: './src/db/schema.ts',
 	out: './.drizzle',
 	dbCredentials: {
-		host: process.env.POSTGRES_HOST,
-		port: Number(process.env.POSTGRES_PORT),
-		user: process.env.POSTGRES_USER,
-		password: process.env.POSTGRES_PASSWORD,
-		database: process.env.POSTGRES_DB,
+		host: env.POSTGRES_HOST,
+		port: Number(env.POSTGRES_PORT),
+		user: env.POSTGRES_USER,
+		password: env.POSTGRES_PASSWORD,
+		database: env.POSTGRES_DATABASE,
 		url: '',
 	},
 });
