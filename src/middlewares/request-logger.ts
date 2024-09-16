@@ -1,5 +1,5 @@
 import morgan from 'morgan';
-import pc from 'picocolors';
+import * as nc from 'recolors';
 
 /**
  * Middleware to log requests with some parameters to the console. Used for
@@ -8,23 +8,23 @@ import pc from 'picocolors';
 export const requestLogger = morgan((tokens, req, res) => {
 	const responseCode = res.statusCode;
 	const responseTime = parseInt(tokens['total-time'](req, res) || '');
-	return `${pc.blue(tokens.method(req, res))} ${pc.bold('@')} ${pc.blue(tokens.url(req, res))} ${pc.bold(
+	return `${nc.blue(tokens.method(req, res))} ${nc.bold('@')} ${nc.blue(tokens.url(req, res))} ${nc.bold(
 		'|>',
 	)} ${
 		isNaN(responseCode)
-			? pc.strikethrough(pc.red('Response Code'))
+			? nc.strikethrough(nc.red('Response Code'))
 			: responseCode < 200
-			? pc.blue(responseCode)
+			? nc.blue(responseCode)
 			: responseCode < 400
-			? pc.green(responseCode)
-			: pc.red(responseCode)
+			? nc.green(responseCode)
+			: nc.red(responseCode)
 	} in ${
 		isNaN(responseTime)
-			? pc.strikethrough(pc.red('Response Time'))
+			? nc.strikethrough(nc.red('Response Time'))
 			: responseTime < 100
-			? pc.green(responseTime)
+			? nc.green(responseTime)
 			: responseTime < 150
-			? pc.yellow(responseTime)
-			: pc.red(responseTime)
+			? nc.yellow(responseTime)
+			: nc.red(responseTime)
 	}ms`;
 });
