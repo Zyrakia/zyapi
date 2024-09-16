@@ -29,3 +29,23 @@ export const TechUsageTable = pgTable('technology_usage', {
 });
 
 export const InsertTechUsageSchema = createInsertSchema(TechUsageTable);
+
+export const UserTable = pgTable('api_user', {
+	id: smallserial('id').primaryKey(),
+	first_name: text('first_name'),
+	last_name: text('last_name'),
+	alias: text('alias'),
+	website: text('website'),
+	avatar_url: text('avatar_url'),
+	birthdate: date('birthdate'),
+	country: text('country'),
+	password: text('password').notNull(),
+	bio: text('bio'),
+});
+
+export const SocialAccountsTable = pgTable('social_account', {
+	user_id: smallserial('user_id').references(() => UserTable.id),
+	platform: text('platform').notNull(),
+	username: text('username'),
+	url: text('url').notNull(),
+});

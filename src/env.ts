@@ -9,7 +9,6 @@ export const env = createEnv({
 		POSTGRES_USER: z.string().default('postgres'),
 		POSTGRES_PASSWORD: z.string(),
 		POSTGRES_DATABASE: z.string(),
-		BIRTHDATE: z.string().pipe(z.coerce.date()),
 	},
 	emptyStringAsUndefined: true,
 	runtimeEnv: process.env,
