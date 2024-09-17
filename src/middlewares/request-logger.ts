@@ -1,5 +1,5 @@
 import morgan from 'morgan';
-import * as nc from 'recolors';
+import * as rc from 'recolors';
 
 /**
  * Middleware to log requests with some parameters to the console. Used for
@@ -8,23 +8,23 @@ import * as nc from 'recolors';
 export const requestLogger = morgan((tokens, req, res) => {
 	const responseCode = res.statusCode;
 	const responseTime = parseInt(tokens['total-time'](req, res) || '');
-	return `${nc.blue(tokens.method(req, res))} ${nc.bold('@')} ${nc.blue(tokens.url(req, res))} ${nc.bold(
+	return `${rc.blue(tokens.method(req, res))} ${rc.bold('@')} ${rc.blue(tokens.url(req, res))} ${rc.bold(
 		'|>',
 	)} ${
 		isNaN(responseCode)
-			? nc.strikethrough(nc.red('Response Code'))
+			? rc.strikethrough(rc.red('Response Code'))
 			: responseCode < 200
-			? nc.blue(responseCode)
+			? rc.blue(responseCode)
 			: responseCode < 400
-			? nc.green(responseCode)
-			: nc.red(responseCode)
+			? rc.green(responseCode)
+			: rc.red(responseCode)
 	} in ${
 		isNaN(responseTime)
-			? nc.strikethrough(nc.red('Response Time'))
+			? rc.strikethrough(rc.red('Response Time'))
 			: responseTime < 100
-			? nc.green(responseTime)
+			? rc.green(responseTime)
 			: responseTime < 150
-			? nc.yellow(responseTime)
-			: nc.red(responseTime)
+			? rc.yellow(responseTime)
+			: rc.red(responseTime)
 	}ms`;
 });
