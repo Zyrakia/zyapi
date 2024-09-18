@@ -8,6 +8,7 @@ export const ProjectTable = pgTable('project', {
 	url: text('url'),
 	start_date: date('start_date'),
 	end_date: date('end_date'),
+	logo_url: text('logo_url'),
 });
 
 export const InsertProjectSchema = createInsertSchema(ProjectTable).omit({ id: true });
