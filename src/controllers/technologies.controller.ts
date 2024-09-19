@@ -42,6 +42,13 @@ export namespace TechnologiesController {
 		return technology[0];
 	}
 
+	
+	/**
+	 * Returns a single technology by the ID of the technology, with projects that are using the technology included.
+	 *
+	 * @param id the ID of the technology to be fetched
+	 * @returns the technology with the given ID, or nothing if the technology doesn't exist
+	 */
 	export async function getTechnologyWithProjects(id: number) {
 		const technology = await TechnologiesController.getTechnology(id);
 		if (!technology) return;
