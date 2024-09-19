@@ -41,7 +41,7 @@ type ResponseBody = SuccessResponseBody | FailureResponseBody;
  * Utility class to resolve Express responses with a reponse body
  * template.
  */
-export class Resolver {
+export class Resolver<ValueType = unknown> {
 	/**
 	 * Represents the current body of this response resolver.
 	 * This will be used when sending the request.
@@ -61,7 +61,7 @@ export class Resolver {
 	 * @param value the value to send along with the response
 	 * @param message the optional message to send along with the response
 	 */
-	public okWith(value: unknown, message?: string) {
+	public okWith(value: ValueType, message?: string) {
 		this.body = Resolver.responseOf(StatusCodes.OK, message, value);
 		this.send();
 	}
@@ -84,7 +84,7 @@ export class Resolver {
 	 * @param value the optional value to send along with the response
 	 * @param message the optional message to send along with the response
 	 */
-	public created(value?: unknown, message?: string) {
+	public created(value?: ValueType, message?: string) {
 		this.body = Resolver.responseOf(StatusCodes.CREATED, message, value);
 		this.send();
 	}
@@ -220,6 +220,6 @@ export class Resolver {
  *
  * @returns the resolver
  */
-export function Resolve(res: Response) {
-	return new Resolver(res);
+export function Resolve<ValidResult>(res: Response) {
+	return new Resolver<ValidResult>(res);
 }

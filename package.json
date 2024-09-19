@@ -37,10 +37,13 @@
 	},
 	"devDependencies": {
 		"@types/bcrypt": "^5.0.2",
+		"@types/bun": "^1.1.9",
 		"@types/cors": "^2.8.17",
 		"@types/express": "^4.17.21",
 		"@types/morgan": "^1.9.9",
+		"build-md": "^0.4.2",
 		"bun": "^1.1.27",
-		"drizzle-kit": "^0.24.2"
+		"drizzle-kit": "^0.24.2",
+		"ts-morph": "^23.0.0"
 	}
 }
