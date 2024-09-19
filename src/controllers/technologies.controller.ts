@@ -1,6 +1,6 @@
 import { db } from '@/db/index.ts';
 import { TechTable, TechUsageTable } from '@/db/schema.ts';
-import { eq, inArray } from 'drizzle-orm';
+import { count, eq, inArray, isNotNull } from 'drizzle-orm';
 import { ProjectsController } from './projects.controller.ts';
 
 /**
@@ -14,8 +14,20 @@ export namespace TechnologiesController {
 	 * @returns the queried technologies
 	 */
 	export async function getTechnologies(ids?: number[]) {
-		if (ids === undefined) return await db.select().from(TechTable);
-		return await db.select().from(TechTable).where(inArray(TechTable.id, ids));
+		return await db
+			.select({
+				id: TechTable.id,
+				name: TechTable.name,
+				url: TechTable.url,
+				logo_url: TechTable.logo_url,
+				skill_level: TechTable.skill_level,
+				category: TechTable.category,
+				projects_referenced: count(TechUsageTable.project_id),
+			})
+			.from(TechTable)
+			.leftJoin(TechUsageTable, eq(TechUsageTable.technology_id, TechTable.id))
+			.groupBy(TechTable.id)
+			.where(ids ? inArray(TechTable.id, ids) : isNotNull(TechTable.id));
 	}
 
 	/**

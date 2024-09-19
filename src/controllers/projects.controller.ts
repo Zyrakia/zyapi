@@ -1,6 +1,6 @@
 import { db } from '@/db/index.ts';
 import { ProjectTable, TechUsageTable } from '@/db/schema.ts';
-import { eq } from 'drizzle-orm';
+import { count, eq } from 'drizzle-orm';
 import { TechnologiesController } from './technologies.controller.ts';
 
 /**
@@ -11,7 +11,21 @@ export namespace ProjectsController {
 	 * Returns all the projects in the database.
 	 */
 	export async function getProjects() {
-		return await db.select().from(ProjectTable);
+		return await db
+			.select({
+				id: ProjectTable.id,
+				name: ProjectTable.name,
+				description: ProjectTable.description,
+				url: ProjectTable.url,
+				start_date: ProjectTable.start_date,
+				end_date: ProjectTable.end_date,
+				logo_url: ProjectTable.logo_url,
+				technologies_referenced: count(TechUsageTable.technology_id),
+			})
+			.from(ProjectTable)
+			.leftJoin(TechUsageTable, eq(TechUsageTable.project_id, ProjectTable.id))
+			.groupBy(ProjectTable.id)
+			.orderBy(ProjectTable.start_date);
 	}
 
 	/**
