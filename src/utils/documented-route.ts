@@ -8,10 +8,12 @@ import { Resolve, Resolver } from './resolve.ts';
  * @param handler the route handler
  * @param middlewares the middlewares to apply to the route
  * @returns the route handler
+ * @template ResponseType the result returned by the route when a successful response is returned, enforced in the resolver
+ * @template BodyType the expected type of the request body, only for reflection purposes
  */
-export function documentedRoute<ValidResult = any, BodyType = any>(
-	handler: (req: Request, res: Response, resolver: Resolver<ValidResult>) => void,
+export function documentedRoute<ResponseType = any, BodyType = any>(
+	handler: (req: Request, res: Response, resolver: Resolver<ResponseType>) => void,
 	middlewares: Handler[] = [],
 ): Handler[] {
-	return [...middlewares, (req, res) => handler(req, res, Resolve<ValidResult>(res))];
+	return [...middlewares, (req, res) => handler(req, res, Resolve<ResponseType>(res))];
 }

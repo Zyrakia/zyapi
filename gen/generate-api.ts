@@ -147,7 +147,7 @@ function mdRenderRoute(route: (typeof routesMeta)[number]) {
 
 	return new MarkdownDocument().$foreach(route.handlers, (doc, handler) => {
 		return doc.details(
-			md`${md.code(handler.kind)} ${md.code(`<b>/</b>`)} - ${handler.description}`,
+			md`${md.code(handler.kind)} ${md.code(`<b>${route.route}</b>`)} - ${handler.description}`,
 			new MarkdownDocument()
 				.$if(handler.properties.length > 0, (doc) => {
 					return doc.heading(3, 'Properties').table(
