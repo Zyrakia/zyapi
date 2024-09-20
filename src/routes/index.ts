@@ -1,9 +1,8 @@
-import { Handler } from 'express';
+import { documentedRoute } from '@/utils/documented-route.ts';
 
 const DEFAULT_USER_ID = 1;
 
-export const get: Handler[] = [
-	async (_, res) => {
-		res.redirect(`/user/${DEFAULT_USER_ID}`);
-	},
-];
+/**
+ * Redirects to the primary user profile (my own profile).
+ */
+export const get = documentedRoute((_, res) => res.redirect(`/user/${DEFAULT_USER_ID}`));

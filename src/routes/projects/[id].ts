@@ -1,17 +1,26 @@
 import { ProjectsController } from '@/controllers/projects.controller.ts';
-import { Resolve } from '@/utils/resolve.ts';
-import { Handler } from 'express';
+import { documentedRoute } from '@/utils/documented-route.ts';
+import { q } from '@/utils/query.ts';
+import { z } from 'zod';
 
-export const get: Handler = async (req, res) => {
-	const id = Number(req.params.id);
-	if (isNaN(id)) return Resolve(res).badRequest('The specified project ID is not a valid number.');
+type Response = Awaited<
+	ReturnType<typeof ProjectsController.getProject | typeof ProjectsController.getProjectWithTechnologies>
+>;
 
-	const withTechnologies = !!req.query.technologies;
+/**
+ * Returns information about a project by the ID of the project.
+ *
+ * @query technologies whether to include the technologies used by the project
+ */
+export const get = documentedRoute<Response>(async (req, _, resolve) => {
+	const id = parseInt(req.params.id);
+	if (isNaN(id)) return resolve.badRequest('The specified project ID is not a valid number.');
 
-	let project = withTechnologies
+	const { technologies } = q(req.query, { technologies: z.coerce.boolean() });
+	let project = technologies
 		? await ProjectsController.getProjectWithTechnologies(id)
 		: await ProjectsController.getProject(id);
 
-	if (!project) return Resolve(res).notFound('The specified project does not exist.');
-	Resolve(res).okWith(project);
-};
+	if (!project) return resolve.notFound('The specified project does not exist.');
+	resolve.okWith(project);
+});

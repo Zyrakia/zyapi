@@ -1,15 +1,26 @@
 import { TechnologiesController } from '@/controllers/technologies.controller.ts';
-import { Resolve } from '@/utils/resolve.ts';
-import { Handler } from 'express';
+import { documentedRoute } from '@/utils/documented-route.ts';
+import { q } from '@/utils/query.ts';
+import { z } from 'zod';
 
-export const get: Handler = async (req, res) => {
-	const projectFilter = req.query.used_by;
-	if (projectFilter !== undefined) {
-		const projectId = Number(projectFilter);
-		if (isNaN(projectId))
-			return Resolve(res).badRequest('Invalid project ID provided as a "used by" filter.');
-		return Resolve(res).okWith(await TechnologiesController.getTechnologiesUsedByProject(projectId));
-	}
+type Response = Awaited<
+	ReturnType<
+		| typeof TechnologiesController.getTechnologies
+		| typeof TechnologiesController.getTechnologiesUsedByProject
+	>
+>;
 
-	Resolve(res).okWith(await TechnologiesController.getTechnologies());
-};
+/**
+ * Returns information about a technology by its ID.
+ * 
+ * @query project_filter 
+ */
+export const get = documentedRoute<Response>(async (req, _, resolve) => {
+	const { project_filter } = q(req.query, { project_filter: z.coerce.number() });
+
+	const technologies = project_filter
+		? await TechnologiesController.getTechnologiesUsedByProject(project_filter)
+		: await TechnologiesController.getTechnologies();
+
+	resolve.okWith(technologies);
+});

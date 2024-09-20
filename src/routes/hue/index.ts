@@ -1,9 +1,11 @@
 import { HueLightsController } from '@/controllers/hue-lights.controller.ts';
-import { Resolve } from '@/utils/resolve.ts';
-import { Handler } from 'express';
+import { documentedRoute } from '@/utils/documented-route.ts';
 
-export const get: Handler = async (_, res) => {
+/**
+ * Returns whether Hue control support is enabled on this server.
+ */
+export const get = documentedRoute(async (_, __, resolve) => {
 	const bridge = await HueLightsController.getBridge();
-	if (!bridge) return Resolve(res).badRequest('Hue is not enabled.');
-	Resolve(res).ok('Hue is enabled.');
-};
+	if (!bridge) return resolve.badRequest('Hue is not enabled.');
+	resolve.ok('Hue is enabled.');
+});

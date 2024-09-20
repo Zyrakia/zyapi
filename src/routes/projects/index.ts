@@ -1,15 +1,19 @@
 import { ProjectsController } from '@/controllers/projects.controller.ts';
-import { Resolve } from '@/utils/resolve.ts';
-import { Handler } from 'express';
+import { documentedRoute } from '@/utils/documented-route.ts';
+import { q } from '@/utils/query.ts';
+import { z } from 'zod';
 
-export const get: Handler = async (req, res) => {
-	const technologyFilter = req.query.using;
-	if (technologyFilter !== undefined) {
-		const technologyId = Number(technologyFilter);
-		if (isNaN(technologyId))
-			return Resolve(res).badRequest('Invalid technology ID provided as "using" filter.');
-		return Resolve(res).okWith(await ProjectsController.getProjectsUsingTechnology(technologyId));
-	}
+type Response = Awaited<
+	ReturnType<typeof ProjectsController.getProjects | typeof ProjectsController.getProjectsUsingTechnology>
+>;
 
-	Resolve(res).okWith(await ProjectsController.getProjects());
-};
+/**
+ * Returns all entered projects.
+ *
+ * @query using_technology when specified, returns only the projects that use the technology associated with the specified ID
+ */
+export const get = documentedRoute<Response>(async (req, _, resolve) => {
+	const { using_technology: technologyId } = q(req.query, { using_technology: z.coerce.number() });
+	if (technologyId) resolve.okWith(await ProjectsController.getProjectsUsingTechnology(technologyId));
+	else resolve.okWith(await ProjectsController.getProjects());
+});

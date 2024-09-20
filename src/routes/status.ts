@@ -1,8 +1,9 @@
-import { Resolve } from '@/utils/resolve.ts';
-import { Handler } from 'express';
-
 import pkg from '../../package.json';
+import { documentedRoute } from '@/utils/documented-route.ts';
 
-export const get: Handler = (req, res) => {
-	Resolve(res).okWith({ version: pkg.version }, 'API is available.');
-};
+/**
+ * Always responds if the API is available, providing the version of the API.
+ */
+export const get = documentedRoute<{ version: string }>(async (_, __, resolve) => {
+	resolve.okWith({ version: pkg.version }, 'API is available.');
+});

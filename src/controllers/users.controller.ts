@@ -1,7 +1,7 @@
 import { db } from '@/db/index.ts';
 import { SocialAccountsTable, UserTable } from '@/db/schema.ts';
 import { compare } from '@/utils/crypto.ts';
-import { and, eq, InferSelectModel } from 'drizzle-orm';
+import { and, Column, eq, InferSelectModel, SelectedFields } from 'drizzle-orm';
 import { PgColumn } from 'drizzle-orm/pg-core';
 
 /**
@@ -12,7 +12,7 @@ export namespace UsersController {
 	 * A select preset for the users table to only return columns that are safe to
 	 * expose to the public.
 	 */
-	const SAFE_SELECT: { [key in keyof InferSelectModel<typeof UserTable>]?: PgColumn } = {
+	const SAFE_SELECT = {
 		first_name: UserTable.first_name,
 		last_name: UserTable.last_name,
 		alias: UserTable.alias,
@@ -20,6 +20,7 @@ export namespace UsersController {
 		avatar_url: UserTable.avatar_url,
 		country: UserTable.country,
 		birthdate: UserTable.birthdate,
+		bio: UserTable.bio,
 	} as const;
 
 	/**
