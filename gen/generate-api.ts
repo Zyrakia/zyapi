@@ -1,9 +1,9 @@
 import { CommentStatement, Node, Project, SourceFile, SyntaxKind, ts, Type, TypeFormatFlags } from 'ts-morph';
 
 import { readdir } from 'node:fs/promises';
-import path, { join } from 'node:path';
+import path, { join, parse } from 'node:path';
 import { logger } from '@/utils/log.ts';
-import { green, red } from 'recolors';
+import { green, red, dim, yellow } from 'recolors';
 import { footprintOfType } from './type-footprint.ts';
 
 import { MarkdownDocument, md } from 'build-md';
@@ -34,10 +34,8 @@ log(`Found ${routeFiles.length} routes`);
 
 const project = new Project({
 	compilerOptions: { noEmit: true },
-	skipAddingFilesFromTsConfig: true,
+	tsConfigFilePath: path.join('tsconfig.json'),
 });
-
-routeFiles.forEach((v) => project.addSourceFileAtPath(v));
 
 function extractRoute(absoluteFilePath: string) {
 	const [_, routePath] = absoluteFilePath.replaceAll('/', path.sep).split(routesRoot);
@@ -122,7 +120,13 @@ console.log();
 log('Extracting routes metadata');
 
 const routesMeta: ReturnType<typeof extractRouteMetadata>[] = [];
-for (const routeFile of project.getSourceFiles()) {
+for (const routeFilePath of routeFiles) {
+	const routeFile = project.getSourceFileOrThrow(routeFilePath);
+	if (!routeFile) {
+		log(red(`The route file ${routeFilePath} was not loaded by Typescript in this project.`));
+		continue;
+	}
+
 	const meta = extractRouteMetadata(routeFile);
 	if (!meta) {
 		log(red(`Could not extract route metadata for ${routeFile.getFilePath()}`));
@@ -133,9 +137,10 @@ for (const routeFile of project.getSourceFiles()) {
 	log(
 		`Extracted metadata for "${meta.route}" (${
 			nHandlers > 0 ? green(nHandlers) : red(nHandlers)
-		} documented handler${nHandlers !== 1 ? 's' : ''})`,
+		} documented handler${nHandlers !== 1 ? 's - skipping' : ''})`,
 	);
 
+	if (meta.handlers.length === 0) continue;
 	routesMeta.push(meta);
 }
 
