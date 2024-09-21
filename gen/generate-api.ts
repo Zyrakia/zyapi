@@ -174,7 +174,7 @@ function renderRouteDeclarations(routes: typeof routesMeta) {
 	const lines = [];
 
 	lines.push(
-		'type HandlerType<ResponseSchema, RequestSchema> = { response: ResponseSchema; request: RequestSchema };\n',
+		'type HandlerType<ResponseSchema = unknown, RequestSchema = unknown> = { __response: ResponseSchema; __request: RequestSchema };\n',
 	);
 
 	lines.push('declare type Routes = {');
