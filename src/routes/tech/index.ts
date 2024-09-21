@@ -12,14 +12,14 @@ type Response = Awaited<
 
 /**
  * Returns information about a technology by its ID.
- * 
- * @query project_filter 
+ *
+ * @query used_by_project when specified, returns only the technologies that were used by the project associated with the specified ID
  */
 export const get = documentedRoute<Response>(async (req, _, resolve) => {
-	const { project_filter } = q(req.query, { project_filter: z.coerce.number() });
+	const { used_by_project } = q(req.query, { used_by_project: z.coerce.number() });
 
-	const technologies = project_filter
-		? await TechnologiesController.getTechnologiesUsedByProject(project_filter)
+	const technologies = used_by_project
+		? await TechnologiesController.getTechnologiesUsedByProject(used_by_project)
 		: await TechnologiesController.getTechnologies();
 
 	resolve.okWith(technologies);
