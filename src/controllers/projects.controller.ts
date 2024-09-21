@@ -66,6 +66,7 @@ export namespace ProjectsController {
 				url: ProjectTable.url,
 				start_date: ProjectTable.start_date,
 				end_date: ProjectTable.end_date,
+				logo_url: ProjectTable.logo_url,
 			})
 			.from(TechUsageTable)
 			.innerJoin(ProjectTable, eq(ProjectTable.id, TechUsageTable.project_id))
