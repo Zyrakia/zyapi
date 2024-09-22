@@ -9,6 +9,7 @@ export const env = createEnv({
 		POSTGRES_USER: z.string().default('postgres'),
 		POSTGRES_PASSWORD: z.string(),
 		POSTGRES_DATABASE: z.string(),
+		POSTGRES_ENDPOINT_ID: z.string().optional(),
 		HUE_IP: z.string().optional(),
 		HUE_USER: z.string().optional(),
 	},
