@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 export const env = createEnv({
 	server: {
-		PORT: z.number().default(3000),
+		PORT: z.coerce.number().default(3000),
 		POSTGRES_HOST: z.string().default('localhost'),
 		POSTGRES_PORT: z.number().default(5432),
 		POSTGRES_USER: z.string().default('postgres'),
